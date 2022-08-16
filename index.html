@@ -12,31 +12,26 @@
         <header>
             <h3>E-commerce</h3>
             <button class="cart"> Cart(0)</button>
-            <div class="cart-content">
-                <div class="cart-content__product ">
+            <div class="cart-content" v-show="cartOpen">
+                <div class="cart-content__product" v-for="(product, index) in cart" :key="product.name" :class="{ 'bg-gray': index & 1}">
                     <img :src="product.images[0].image" :alt="product.name">
-                    <span>{{ product.name }} -- ${{ productPrice }} </span>
-                </div>
-                <div class="cart-content__product ">
-                    <img :src="product.images[1].image" :alt="product.name">
                     <span>{{ product.name }} -- ${{ productPrice }} </span>
                 </div>
             </div>
         </header>
         <main>
             <section class="product">
-                <div class="products__thumbnails">
-                    <div class="thumb" :class="{ active: activeImage === 0 }" :style="{ backgroundImage: 'url('+ product.images[0].thumbnail  +')'}"></div>
-                    <div class="thumb" :class="{ active: activeImage === 1 }" :style="{ backgroundImage: 'url(' + product.images[1].thumbnail + ')' }"></div>
+                <div class="product__thumbnails">
+                    <div v-for="(image, index) in product.images" :key="image.thumbnail " class="thumb" :class="{ active: activeImage === index }" :style="{ backgroundImage: 'url('+ product.images[index].thumbnail + ')'}"></div>
                 </div>
                 <div class="product__image">
-                    <img :src="product.images[0].image" :alt="product.name">
+                    <!---<img :src="product.images[0].image" :alt="product.name">-->
                 </div>
             </section> 
             <section class="description">
                 <h4>{{ product.name }}</h4>
-                <span class="badge new">New</span>
-                <span class="badge offer">Sale</span>
+                <span class="badge new" v-if="product.new">New</span>
+                <span class="badge offer" v-if="product.sale">Sale</span>
                 <p class="description__status"></p>
                 <p class="descirption__price">$4000</p>
                 <p class="description__content">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus distinctio aliquam architecto quibusdam nesciunt maiores recusandae magni! Non ducimus maxime praesentium officia mollitia minus cupiditate dignissimos doloremque, placeat quas in!</p>
@@ -44,6 +39,7 @@
                     <span>Discount Code</span>
                     <input type="text" placeholder="Your Code Here">
                 </div>
+                <button :disabled="product.stock === 0">Add To Cart</button>
             </section>
         </main> 
     </div>
@@ -67,9 +63,50 @@
                                 image: "./images/camara-2.jpg",
                                 thumbnail: "./images/camara-2-thumb.jpg"
                             },
-                        ]
+                        ],
+                        new:false,
+                        sale:true
                     },
                     activeImage: 0,
+                    cartOpen: true,
+                    cart:[
+                        {
+                            name: "Camera PL",
+                            price: 250_000,
+                            stock: 0,
+                            content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus distinctio aliquam architecto quibusdam nesciunt maiores recusandae magni! Non ducimus maxime praesentium officia mollitia minus cupiditate dignissimos doloremque, placeat quas in!`,
+                            images: [
+                                {
+                                    image: "./images/camara.jpg",
+                                    thumbnail: "./images/camara-thumb.jpg"
+                                },
+                                {
+                                    image: "./images/camara-2.jpg",
+                                    thumbnail: "./images/camara-2-thumb.jpg"
+                                },
+                            ],
+                            new:false,
+                            sale:true
+                        },
+                        {
+                        name: "Camera",
+                        price: 500_000,
+                        stock: 0,
+                        content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus distinctio aliquam architecto quibusdam nesciunt maiores recusandae magni! Non ducimus maxime praesentium officia mollitia minus cupiditate dignissimos doloremque, placeat quas in!`,
+                        images: [
+                            {
+                                image: "./images/camara.jpg",
+                                thumbnail: "./images/camara-thumb.jpg"
+                            },
+                            {
+                                image: "./images/camara-2.jpg",
+                                thumbnail: "./images/camara-2-thumb.jpg"
+                            },
+                        ],
+                        new:false,
+                        sale:true
+                        },
+                    ]
                 }
             },
             computed: {
